@@ -58,7 +58,7 @@
         values <include refid="insertEntitySql"/>
     </insert>
 
-    <insert id="insertUseGeneratedKeysParam" useGeneratedKeys="true" keyProperty="entity.id">
+    <insert id="insertUseGeneratedKeysParam" useGeneratedKeys="true" keyProperty="id">
         insert into boy <include refid="insertTableSql" />
         values <include refid="insertEntitySql" />
     </insert>
@@ -95,7 +95,7 @@
         on duplicate key update <include refid="onDuplicateKeyUpdate" />
     </insert>
 
-    <insert id="insertOrUpdateUseGeneratedKeysParam" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertOrUpdateUseGeneratedKeysParam" useGeneratedKeys="true" keyProperty="entity.id">
         insert into boy <include refid="insertTableSql" />
         values <include refid="insertEntitySql" />
         on duplicate key update <include refid="onDuplicateKeyUpdate" />
@@ -122,7 +122,7 @@
         on duplicate key update <include refid="onDuplicateKeyUpdate" />
     </insert>
 
-    <insert id="insertOrUpdateBatch" parameterType="com.jxshen.mybatis.test.entity.BoyEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertOrUpdateBatch" useGeneratedKeys="true" keyProperty="id">
         insert into boy <include refid="insertTableSql" />
         values <include refid="insertForeachSql" />
         on duplicate key update <include refid="onDuplicateKeyUpdate" />

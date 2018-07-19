@@ -1,0 +1,8 @@
+CREATE TABLE `boy` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  `created_time` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
+  `modified_time` timestamp NULL DEFAULT NULL COMMENT '记录修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE `unq_name` USING BTREE (`name`) comment ''
+) ENGINE=`InnoDB` AUTO_INCREMENT=1 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ROW_FORMAT=COMPACT COMMENT='' CHECKSUM=0 DELAY_KEY_WRITE=0;
