@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jxshen.mybatis.test.dao.BoyDao">
+    <resultMap id="BaseResultMap" type="com.jxshen.mybatis.test.entity.BoyEntity">
+    </resultMap>
+
+    <sql id="foreachSql">
+        <foreach collection="itemList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </sql>
+
+    <sql id="insertForeachEntitySql">
+        <foreach collection="entityList" item="entity" index= "index" separator =",">
+            <include refid="insertEntitySql" />
+        </foreach>
+    </sql>
+
+    <sql id="insertForeachSql">
+        <foreach collection="list" item="entity" index= "index" separator =",">
+            <include refid="insertEntitySql" />
+        </foreach>
+    </sql>
+
+    <sql id="insertTableSql">
+        (
+            `name`,
+            created_time,
+            modified_time
+        )
+    </sql>
+
+    <sql id="insertEntitySql">
+        (
+            #{entity.name},
+            now(),
+            now()
+        )
+    </sql>
+
+    <sql id="insertSql">
+        (
+            #{name},
+            now(),
+            now()
+        )
+    </sql>
+
+    <sql id="onDuplicateKeyUpdate">
+        modified_time = now()
+    </sql>
+
+    <insert id="insertSelectKeyParam">
+        <selectKey resultType="java.lang.Long" keyProperty="entity.id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into boy <include refid="insertTableSql"/>
+        values <include refid="insertEntitySql"/>
+    </insert>
+
+    <insert id="insertUseGeneratedKeysParam" useGeneratedKeys="true" keyProperty="entity.id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertEntitySql" />
+    </insert>
+
+    <insert id="insertSelectKey" parameterType="com.jxshen.mybatis.test.entity.BoyEntity">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into boy <include refid="insertTableSql"/>
+        values <include refid="insertSql"/>
+    </insert>
+
+    <insert id="insertUseGeneratedKeys" parameterType="com.jxshen.mybatis.test.entity.BoyEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertSql" />
+    </insert>
+
+    <insert id="insertBatchParam" useGeneratedKeys="true" keyProperty="entity.id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertForeachEntitySql" />
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertForeachSql" />
+    </insert>
+
+    <insert id="insertOrUpdateSelectKeyParam">
+        <selectKey resultType="java.lang.Long" keyProperty="entity.id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertEntitySql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+    <insert id="insertOrUpdateUseGeneratedKeysParam" useGeneratedKeys="true" keyProperty="id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertEntitySql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+    <insert id="insertOrUpdateSelectKey" parameterType="com.jxshen.mybatis.test.entity.BoyEntity">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertSql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+    <insert id="insertOrUpdateUseGeneratedKeys" parameterType="com.jxshen.mybatis.test.entity.BoyEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertSql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+    <insert id="insertOrUpdateBatchParam" useGeneratedKeys="true" keyProperty="id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertForeachEntitySql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+    <insert id="insertOrUpdateBatch" parameterType="com.jxshen.mybatis.test.entity.BoyEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into boy <include refid="insertTableSql" />
+        values <include refid="insertForeachSql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+</mapper>
