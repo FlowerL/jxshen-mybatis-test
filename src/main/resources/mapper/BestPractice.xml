@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jxshen.mybatis.test.dao.BestPracticeDao">
+    <resultMap id="BaseResultMap" type="com.jxshen.mybatis.test.entity.BestPracticeEntity">
+    </resultMap>
+
+    <sql id="foreachSql">
+        <foreach collection="itemList" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </sql>
+
+    <sql id="insertTableSql">
+        (
+            `name`,
+            age,
+            created_time,
+            modified_time
+        )
+    </sql>
+
+    <sql id="insertEntitySql">
+        (
+            #{name},
+            #{age},
+            now(),
+            now()
+        )
+    </sql>
+
+    <sql id="insertForeachEntitySql">
+        (
+        #{entity.name},
+        #{entity.age},
+        now(),
+        now()
+        )
+    </sql>
+
+    <sql id="insertForeachSql">
+        <foreach collection="list" item="entity" index= "index" separator =",">
+            <include refid="insertForeachEntitySql" />
+        </foreach>
+    </sql>
+
+    <sql id="onDuplicateKeyUpdate">
+        age = values(age),
+        modified_time = now()
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into best_practice <include refid="insertTableSql" />
+        values <include refid="insertEntitySql" />
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into best_practice <include refid="insertTableSql" />
+        values <include refid="insertForeachSql" />
+    </insert>
+
+    <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="id">
+        insert into best_practice <include refid="insertTableSql" />
+        values <include refid="insertEntitySql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+    <insert id="insertOrUpdateBatch">
+        insert into best_practice <include refid="insertTableSql" />
+        values <include refid="insertForeachSql" />
+        on duplicate key update <include refid="onDuplicateKeyUpdate" />
+    </insert>
+
+</mapper>
