@@ -64,7 +64,7 @@
         on duplicate key update <include refid="onDuplicateKeyUpdate" />
     </insert>
 
-    <insert id="insertOrUpdateBatch">
+    <insert id="insertOrUpdateBatch"  useGeneratedKeys="true" keyProperty="id">
         insert into best_practice <include refid="insertTableSql" />
         values <include refid="insertForeachSql" />
         on duplicate key update <include refid="onDuplicateKeyUpdate" />
